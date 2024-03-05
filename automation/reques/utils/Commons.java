@@ -3,6 +3,7 @@ package reques.utils;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import reques.clients.RequesClients;
+import reques.request.Register;
 import reques.request.UpdateUserData;
 import reques.request.UserData;
 import reques.response.*;
@@ -13,6 +14,7 @@ public class Commons {
 
     UserData userData;
     UpdateUserData updateUserData;
+    Register register;
 
     protected NewUserResponse createUser() {
         RequesClients requesClients = new RequesClients();
@@ -71,5 +73,23 @@ public class Commons {
         UpdateUserResponse user = response.as(UpdateUserResponse.class);
         System.out.println("User updated");
         return user;
+    }
+
+    protected  RegisterUserResponse registerUser(String email) {
+        RequesClients requesClients = new RequesClients();
+        register = register.builder().email(email).build();
+        Response response = requesClients.registerUser(OK, register,email,null);
+        RegisterUserResponse registerUserResponse = response.as(RegisterUserResponse.class);
+        System.out.println("User registered");
+        return registerUserResponse;
+    }
+
+    protected  LoginUserResponse loginUser(String email) {
+        RequesClients requesClients = new RequesClients();
+        register = register.builder().email(email).build();
+        Response response = requesClients.loginUser(OK, register, email, null);
+        LoginUserResponse loginUserResponse = response.as(LoginUserResponse.class);
+        System.out.println("User logged in");
+        return loginUserResponse;
     }
 }

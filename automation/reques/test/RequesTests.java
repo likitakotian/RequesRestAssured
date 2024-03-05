@@ -82,13 +82,39 @@ public class RequesTests extends Commons {
         id = newUserResponse.getId();
         try {
             UpdateUserResponse updateUserResponse = updateUser(id);
-            Assert.assertNotEquals(newUserResponse.getName(), updateUserResponse.getName(),"name updated");
-            Assert.assertNotEquals(newUserResponse.getJob(), updateUserResponse.getJob(),"job updated");
+            Assert.assertNotEquals(newUserResponse.getName(), updateUserResponse.getName(), "name updated");
+            Assert.assertNotEquals(newUserResponse.getJob(), updateUserResponse.getJob(), "job updated");
             Assert.assertNotNull(updateUserResponse.getUpdatedAt());
         } catch (Exception e) {
             throw e;
         } finally {
             deleteUser(id);
+        }
+    }
+
+    @DisplayName("Register a new user")
+    @Test
+    public void test_register_new_user() {
+        UserResponse userById = getUser(1);
+        RegisterUserResponse registerUserResponse = registerUser(userById.getData().getEmail());
+        try {
+            Assert.assertNotNull(registerUserResponse.getId());
+            Assert.assertNotNull(registerUserResponse.getToken());
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @DisplayName("Login a user")
+    @Test
+    public void test_login_user() {
+        UserResponse userById = getUser(1);
+        RegisterUserResponse registerUserResponse = registerUser(userById.getData().getEmail());
+        LoginUserResponse loginUserResponse = loginUser(userById.getData().getEmail());
+        try {
+            Assert.assertNotNull(loginUserResponse.getToken());
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

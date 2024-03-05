@@ -3,6 +3,7 @@ package reques.clients;
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
+import reques.request.Register;
 import reques.request.UpdateUserData;
 import reques.request.UserData;
 import reques.utils.TestUtil;
@@ -73,16 +74,16 @@ public class RequesClients {
         return response;
     }
 
-    public Response registerUser(javax.ws.rs.core.Response.StatusType status, String email, String password, String path) {
-        Response response = TestUtil.waitForExpectedStatusCode(() -> given().contentType(ContentType.JSON).body("{\n" + "    \"email\": \"" + email + "\",\n" + "    \"password\": \"" + password + "\"\n" + "}").with().log().all().when().post(BASE_URL + "/api/register"), status);
+    public Response registerUser(javax.ws.rs.core.Response.StatusType status, Register payload,String email, String path) {
+        Response response = TestUtil.waitForExpectedStatusCode(() -> given().contentType(ContentType.JSON).body(payload).with().log().all().when().post(BASE_URL + "/api/register"), status);
         if (path != null) {
             response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchemaInClasspath(path));
         }
         return response;
     }
 
-    public Response loginUser(javax.ws.rs.core.Response.StatusType status, String email, String password, String path) {
-        Response response = TestUtil.waitForExpectedStatusCode(() -> given().contentType(ContentType.JSON).with().log().all().body("{\n" + "    \"email\": \"" + email + "\",\n" + "    \"password\": \"" + password + "\"\n" + "}").when().post(BASE_URL + "/api/login"), status);
+    public Response loginUser(javax.ws.rs.core.Response.StatusType status, Register payload,String email, String path) {
+        Response response = TestUtil.waitForExpectedStatusCode(() -> given().contentType(ContentType.JSON).with().log().all().body(payload).when().post(BASE_URL + "/api/login"), status);
         if (path != null) {
             response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchemaInClasspath(path));
         }
