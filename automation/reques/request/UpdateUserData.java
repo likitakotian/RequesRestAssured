@@ -16,6 +16,4 @@ public class UpdateUserData {
     private String name = new Faker().name().firstName();
     @Builder.Default
     private String job = new Faker().job().title();
-    @Builder.Default
-    private String createdAt = TestUtil.getCurrentDate();
 }
